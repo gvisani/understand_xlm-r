@@ -57,8 +57,8 @@ if __name__ == '__main__':
         plt.xticks(layers)
         plt.ylim((0.49, 1.01))
         plt.legend()
-        plt.show()
         plt.savefig('POS_results/f1_micro-%s-%s_model.pdf' % (tag, model_type))
+        plt.show()
 
         for ll, language in enumerate(languages):
             plt.plot(layers, f1_macro_scores_by_language[ll], marker='d', label=language)
@@ -67,5 +67,5 @@ if __name__ == '__main__':
         plt.xticks(layers)
         plt.ylim((0.49, 1.01))
         plt.legend()
-        plt.show()
         plt.savefig('POS_results/f1_macro-%s-%s_model.pdf' % (tag, model_type))
+        plt.show()
