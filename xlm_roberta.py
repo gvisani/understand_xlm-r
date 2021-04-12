@@ -67,9 +67,9 @@ def collapse_weights(attn_weights, tok_map):
     return collapsed_weights
 
 if __name__ == '__main__':
-    sentences_english = collect_PUD('English', 'en')
-    # sentences_italian = collect_PUD('Italian', 'it')
-    # sentences_hindi = collect_PUD('Hindi', 'hi')
+    # sentences = collect_PUD('English', 'en')
+    sentences = collect_PUD('Italian', 'it')
+    # sentences = collect_PUD('Hindi', 'hi')
 
     # The tokenizer adds an extra embedding both at the start and at the end of a sentence: the bos and eos embeddings.
     # It looks like XLM-Roberta does not use language embeddings??? It just knows which language it is?
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     model = XLMRobertaModel.from_pretrained("xlm-roberta-base")
 
     try:
-        for sentence in tqdm(sentences_english):
+        for sentence in tqdm(sentences):
             pre_tok_sen = get_pretokenized_text(sentence)
             input_ids = torch.tensor([tokenizer(pre_tok_sen, is_split_into_words=True)['input_ids']])
             tok_map = [tokenizer.encode(x, add_special_tokens=False) for x in pre_tok_sen]
@@ -108,5 +108,5 @@ if __name__ == '__main__':
         print(input_ids)
         print(outputs.hidden_states[emb_i].shape)
 
-    with open('sentences_english_with_base_embeddings.pkl', 'wb') as f:
-        pickle.dump(sentences_english, f)
+    with open('../sentences_italian_with_base_embeddings.pkl', 'wb') as f:
+        pickle.dump(sentences, f)
