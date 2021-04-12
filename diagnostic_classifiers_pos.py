@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 from tqdm import tqdm
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
 import matplotlib.pyplot as plt
@@ -186,6 +187,10 @@ if __name__ == '__main__':
             y_train_NT = np.vstack(np.append(y_S[: ff*100], y_S[(ff+1)*100 :]))
             y_test_MT = np.vstack(y_S[ff*100 : (ff+1)*100])
 
+            # for compatibility with CrossEntropyLoss
+            y_train_N = one_hot_to_indices(y_train_NT)
+            y_test_M = one_hot_to_indices(y_test_MT)
+
             model = nn.Sequential(
                             nn.Linear(X_train_NF.shape[1], y_train_NT.shape[1])
                             )
@@ -194,10 +199,6 @@ if __name__ == '__main__':
             epochs = 10
             loss_fn = nn.CrossEntropyLoss()
             optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-            # for compatibility with CrossEntropyLoss
-            y_train_N = one_hot_to_indices(y_train_NT)
-            y_test_M = one_hot_to_indices(y_test_MT)
 
             train_dataset = dataset(X_train_NF, y_train_N)
             test_dataset = dataset(X_test_MF, y_test_M)
@@ -211,10 +212,13 @@ if __name__ == '__main__':
             
             _, y_pred_M = test_loop(test_dataloader, model, loss_fn)
 
+            # model = LogisticRegression(C=1.0, multi_class='multinomial', max_iter=100)
+            # model.fit(X_train_NF, y_train_N)
+            # y_pred_M = model.predict(X_test_MF)
+
             y_test_total.append(y_test_M)
             y_pred_total.append(y_pred_M)
         
-
         y_test_total = np.hstack(y_test_total)
         y_pred_total = np.hstack(y_pred_total)
 
