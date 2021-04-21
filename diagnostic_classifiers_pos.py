@@ -51,12 +51,16 @@ def create_dataset(sentences, model_type='base'):
     for i, y_upos_sentence in enumerate(y_upos):
         y_upos[i] = one_hot_encoder_upos.transform(np.array(y_upos_sentence).reshape(-1, 1))
 
+    upos_list_mapping = list(one_hot_encoder_upos.categories_[0])
+
     one_hot_encoder_xpos = OneHotEncoder(sparse = False)
     one_hot_encoder_xpos = one_hot_encoder_xpos.fit(np.array(y_xpos_all).reshape(-1, 1))
     for i, y_xpos_sentence in enumerate(y_xpos):
         y_xpos[i] = one_hot_encoder_xpos.transform(np.array(y_xpos_sentence).reshape(-1, 1))
+
+    xpos_list_mapping = list(one_hot_encoder_xpos.categories_[0])
     
-    return X_by_layer, y_upos, y_xpos
+    return X_by_layer, y_upos, y_xpos, upos_list_mapping, xpos_list_mapping
 
 class dataset(torch.utils.data.Dataset):
     def __init__(self, X, y):
@@ -142,7 +146,7 @@ if __name__ == '__main__':
     print('-----------------------------------------------------')
     print('          Creating dataset for %s model' % (model_type))
     print('-----------------------------------------------------')
-    X_by_layer, y_upos, y_xpos = create_dataset(sentences, model_type)
+    X_by_layer, y_upos, y_xpos, upos_list_mapping, xpos_list_mapping = create_dataset(sentences, model_type)
 
     print('There are %d sentences, %d tokens, %d unique UPOS tags, and %d unique XPOS tags.'
                         % (len(X_by_layer['Layer 0']), np.sum([x.shape[0] for x in X_by_layer['Layer 0']]), y_upos[0].shape[1], y_xpos[0].shape[1]))
@@ -152,6 +156,11 @@ if __name__ == '__main__':
     for layer_key in X_by_layer:
         print('%s: %d' % (layer_key, X_by_layer[layer_key][0].shape[1]))
 
+    with open('POS_results/%s_UPOS_map.pkl' % language, 'wb') as f:
+        pickle.dump(upos_list_mapping, f)
+
+    with open('POS_results/%s_XPOS_map.pkl' % language, 'wb') as f:
+        pickle.dump(xpos_list_mapping, f)
 
     ## Train classifiers!
     ## S = number of sentences
@@ -164,6 +173,8 @@ if __name__ == '__main__':
     indices = np.arange(len(X_by_layer['Layer 0']), dtype=np.int32)
     np.random.shuffle(indices)
 
+    all_test_by_layer = []
+    all_pred_by_layer = []
     accuracy_scores = []
     f1_micro_scores = []
     f1_macro_scores = []
@@ -227,10 +238,18 @@ if __name__ == '__main__':
         f1_macro = f1_score(y_test_total, y_pred_total, average='macro', zero_division=0)
         f1_weighted = f1_score(y_test_total, y_pred_total, average='weighted', zero_division=0)
 
+        all_test_by_layer.append(y_test_total)
+        all_pred_by_layer.append(y_pred_total)
         accuracy_scores.append(accuracy)
         f1_micro_scores.append(f1_micro)
         f1_macro_scores.append(f1_macro)
         f1_weighted_scores.append(f1_weighted)
+
+    with open('POS_results/%s_%s_%s_model_ground_truth_scores_by_layer.pkl' % (language, tag, model_type), 'wb') as f:
+        pickle.dump(all_test_by_layer, f)
+
+    with open('POS_results/%s_%s_%s_model_predictions_scores_by_layer.pkl' % (language, tag, model_type), 'wb') as f:
+        pickle.dump(all_pred_by_layer, f)
 
     with open('POS_results/%s_%s_%s_model_accuracy_scores_by_layer.pkl' % (language, tag, model_type), 'wb') as f:
         pickle.dump(accuracy_scores, f)

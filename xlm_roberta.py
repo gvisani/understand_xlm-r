@@ -24,7 +24,7 @@ def collect_PUD(language, shorthand):
 
             if len(line_items) == 0: # separation between sentences
                 sentences.append(sentence)
-            elif line_items[1] == 'newdoc' or line_items[1] == 'Checktree:' or line_items[1] == 'text_en': # just skip these lines whenever they occur
+            elif line_items[1] == 'newdoc' or line_items[1] == 'Checktree:' or line_items[1] == 'text_en'or line_items[1] == '???': # just skip these lines whenever they occur
                 pass
             elif line_items[1] == 'sent_id':
                 sentence = [{'sent_id': line_items[3]}]
@@ -67,9 +67,10 @@ def collapse_weights(attn_weights, tok_map):
     return collapsed_weights
 
 if __name__ == '__main__':
-    # sentences = collect_PUD('English', 'en')
+    sentences = collect_PUD('English', 'en')
     # sentences = collect_PUD('Italian', 'it')
-    sentences = collect_PUD('Hindi', 'hi')
+    # sentences = collect_PUD('Hindi', 'hi')
+    # sentences = collect_PUD('Icelandic', 'is')
 
     # The tokenizer adds an extra embedding both at the start and at the end of a sentence: the bos and eos embeddings.
     # It looks like XLM-Roberta does not use language embeddings??? It just knows which language it is?
@@ -108,5 +109,5 @@ if __name__ == '__main__':
         print(input_ids)
         print(outputs.hidden_states[emb_i].shape)
 
-    with open('../sentences_hindi_with_base_embeddings.pkl', 'wb') as f:
+    with open('../sentences_english_with_base_embeddings.pkl', 'wb') as f:
         pickle.dump(sentences, f)
