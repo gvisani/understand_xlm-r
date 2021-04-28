@@ -67,7 +67,7 @@ def collapse_weights(attn_weights, tok_map):
     return collapsed_weights
 
 if __name__ == '__main__':
-    sentences = collect_PUD('English', 'en')
+    sentences = collect_PUD('English', 'en_it')
     # sentences = collect_PUD('Italian', 'it')
     # sentences = collect_PUD('Hindi', 'hi')
     # sentences = collect_PUD('Icelandic', 'is')
@@ -109,5 +109,5 @@ if __name__ == '__main__':
         print(input_ids)
         print(outputs.hidden_states[emb_i].shape)
 
-    with open('../sentences_english_with_base_embeddings.pkl', 'wb') as f:
+    with open('../sentences_english_italian_experiment_with_base_embeddings.pkl', 'wb') as f:
         pickle.dump(sentences, f)

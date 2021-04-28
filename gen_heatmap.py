@@ -30,9 +30,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_type', default='base', type=str)
-    parser.add_argument('--language', default='english_hin', type=str)
-    parser.add_argument('--sentence', default=0, type=int)
-    parser.add_argument('--word', default=26, type=int)
+    parser.add_argument('--language', default='english_italian_experiment', type=str)
+    parser.add_argument('--sentence', default=6, type=int)
+    parser.add_argument('--word', default=34, type=int)
     parser.add_argument('--by_head', default=False, type=bool)
 
     args = parser.parse_args()
