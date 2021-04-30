@@ -67,6 +67,10 @@ def collapse_weights(attn_weights, tok_map):
     return collapsed_weights
 
 if __name__ == '__main__':
+    #sentences = collect_PUD('English', 'en')
+    #sentences = collect_PUD('English', 'eh')
+    #sentences = collect_PUD('Italian', 'it')
+    #sentences = collect_PUD('Hindi', 'hi')
     sentences = collect_PUD('English', 'en_it')
     # sentences = collect_PUD('Italian', 'it')
     # sentences = collect_PUD('Hindi', 'hi')
