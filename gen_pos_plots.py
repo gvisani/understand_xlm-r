@@ -3,14 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 import argparse
+from sklearn.metrics import f1_score
+import pandas as pd
+from scipy.stats import spearmanr
 
 MODEL_TYPE_TO_NUM_LAYERS = {'base': 13}
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_type', default='base', type=str)
-    parser.add_argument('--language', default='english,italian,hindi', type=str)
+    parser.add_argument('--language', default='english,italian,hindi,icelandic', type=str)
     parser.add_argument('--tag', default='UPOS', type=str)
     args = parser.parse_args()
 
@@ -55,7 +57,10 @@ if __name__ == '__main__':
         plt.grid(ls='--', color='gray', alpha=0.5)
         plt.title('F1 Micro - %s - %s model' % (tag, model_type))
         plt.xticks(layers)
-        plt.ylim((0.49, 1.01))
+        if tag == 'UPOS':
+            plt.ylim((0.59, 1.01))
+        else:
+            plt.ylim((0.19, 1.01))
         plt.legend()
         plt.savefig('POS_results/f1_micro-%s-%s_model.pdf' % (tag, model_type))
         plt.show()
@@ -65,7 +70,27 @@ if __name__ == '__main__':
         plt.grid(ls='--', color='gray', alpha=0.5)
         plt.title('F1 Macro - %s - %s model' % (tag, model_type))
         plt.xticks(layers)
-        plt.ylim((0.49, 1.01))
+        if tag == 'UPOS':
+            plt.ylim((0.59, 1.01))
+        else:
+            plt.ylim((0.19, 1.01))
         plt.legend()
         plt.savefig('POS_results/f1_macro-%s-%s_model.pdf' % (tag, model_type))
+        plt.show()
+
+        # f1 macro plot with no outliars
+        for language in languages:
+            scores_table = pd.read_csv('POS_results/%s_%s_%s_model_f1_scores_by_tag_by_layer.csv' % (language, tag, model_type), index_col='index')
+            layer_names = ['Layer %d' % (ll) for ll in range(MODEL_TYPE_TO_NUM_LAYERS[model_type])]
+            f1_macro_no_outliars = scores_table.loc[layer_names, 'Macro, No Outliars']
+            plt.plot(layers, f1_macro_no_outliars, marker='d', label=language)
+        plt.title('F1 Macro, No Outliars - %s - %s model' % (tag, model_type))
+        plt.grid(ls='--', color='gray', alpha=0.5)
+        plt.xticks(layers)
+        if tag == 'UPOS':
+            plt.ylim((0.59, 1.01))
+        else:
+            plt.ylim((0.19, 1.01))
+        plt.legend()
+        plt.savefig('POS_results/f1_macro_no_outliars-%s-%s_model.pdf' % (tag, model_type))
         plt.show()

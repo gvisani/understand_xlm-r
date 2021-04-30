@@ -21,3 +21,4 @@ dependencies:
   ## Pip-only packages
   - pip:
     - dash>=1.10.0
+    - umap-learn

@@ -1,0 +1,12 @@
+english	italian
+dog	cane
+cat	gatto
+giraffe	giraffa
+delicious	delizioso
+wine	vino
+acqua	water
+lizard	lucertola
+cheese	formaggio
+spoon	cucchiaio
+assistant	assistente
+beer	birra
