@@ -9,7 +9,7 @@ import pickle
 
 if __name__ == '__main__':
 
-    with open('english_italian_dictionary_with_embeddings.pkl', 'rb') as f:
+    with open('english_hindi_dictionary_with_embeddings.pkl', 'rb') as f:
         dictionary = pickle.load(f)
 
     layer = 'Layer 12'
@@ -36,6 +36,8 @@ if __name__ == '__main__':
             return 'blue'
         elif language == 'italian':
             return 'red'
+        elif language == 'hindi':
+            return 'green'
         else:
             return 'black'
 
