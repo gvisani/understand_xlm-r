@@ -10,3 +10,5 @@ cheese	formaggio
 spoon	cucchiaio
 assistant	assistente
 beer	birra
+elephant	elefante
+lion	leone
