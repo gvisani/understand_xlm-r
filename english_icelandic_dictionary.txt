@@ -1,0 +1,12 @@
+english	icelandic
+dog	hundur
+cat	köttur
+giraffe	gíraffi
+delicious	ljúffengur
+wine	vín
+water	vatn
+lizard	eðla
+cheese	ostur
+spoon	skeið
+assistant	aðstoðarmaður
+beer	bjór
