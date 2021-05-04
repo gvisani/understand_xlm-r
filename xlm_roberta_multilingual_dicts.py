@@ -47,7 +47,7 @@ def collapse_weights(attn_weights, tok_map):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english_icelandic', type=str)
+    parser.add_argument('--languages', default='english_italian_v2', type=str)
     args = parser.parse_args()
 
     dictionary = collect_dictionary('%s_dictionary.txt' % (args.languages))
