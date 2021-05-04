@@ -67,14 +67,15 @@ def collapse_weights(attn_weights, tok_map):
     return collapsed_weights
 
 if __name__ == '__main__':
-    #sentences = collect_PUD('English', 'en')
-    #sentences = collect_PUD('English', 'eh')
-    #sentences = collect_PUD('Italian', 'it')
-    #sentences = collect_PUD('Hindi', 'hi')
-    sentences = collect_PUD('English', 'en_it')
+    # Base languages
+    sentences = collect_PUD('English', 'en')
     # sentences = collect_PUD('Italian', 'it')
     # sentences = collect_PUD('Hindi', 'hi')
     # sentences = collect_PUD('Icelandic', 'is')
+
+    # Mix of languages for attention visualization experiments. We created these files ourselves
+    # sentences = collect_PUD('English', 'en_it')
+    # sentences = collect_PUD('English', 'eh')
 
     # The tokenizer adds an extra embedding both at the start and at the end of a sentence: the bos and eos embeddings.
     # It looks like XLM-Roberta does not use language embeddings??? It just knows which language it is?
@@ -113,5 +114,5 @@ if __name__ == '__main__':
         print(input_ids)
         print(outputs.hidden_states[emb_i].shape)
 
-    with open('../sentences_english_italian_experiment_with_base_embeddings.pkl', 'wb') as f:
+    with open('../sentences_english_experiment_with_base_embeddings.pkl', 'wb') as f:
         pickle.dump(sentences, f)

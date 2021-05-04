@@ -21,11 +21,26 @@ mpl.rcParams['font.sans-serif'] = ['Source Han Sans TW',
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english_icelandic', type=str)
+    parser.add_argument('--languages', default='english,italian', type=str)
+    parser.add_argument('--index_pairs', default='16-20,19-23,26-39,34-31,6-9,8-10,25-40,21-24')
     args = parser.parse_args()
 
-    with open('%s_dictionary_with_embeddings.pkl' % (args.languages), 'rb') as f:
-        dictionary = pickle.load(f)
+    languages = args.languages.split(',')
+
+    sentences = {}
+    for language in languages:
+        with open('../sentences_%s_with_base_embeddings.pkl' % (language), 'rb') as f:
+            sentences[language] = pickle.load(f)
+
+    indices = {}
+    for language in languages:
+        indices[language] = []
+    index_pairs = args.index_pairs.split(',')
+    for pair in index_pairs:
+        first, second = list(map(int, pair.split('-')))
+        indices[languages[0]].append(first)
+        indices[languages[1]].append(second)
+
 
     colors = [hsv_to_rgb([(i * 0.618033988749895) % 1.0, 1, 1]) for i in range(100)]
     plt.rc('axes', prop_cycle=(cycler('color', colors)))
@@ -44,12 +59,13 @@ if __name__ == '__main__':
         word_names = []
         word_embeddings = []
         word_languages = []
-        for language in dictionary:
-            for word_info in dictionary[language]:
-                if word_info['token'] not in word_names:
-                    word_names.append(word_info['token'])
-                    word_embeddings.append(word_info[layer])
-                    word_languages.append(language)
+        for language in languages:
+            sentence = sentences[language][0] # we use only the first sentence in our experiments
+            for index in indices[language]:
+                word_info = sentence[index]
+                word_names.append(word_info['token'])
+                word_embeddings.append(word_info[layer])
+                word_languages.append(language)
 
         word_embeddings = np.vstack(word_embeddings)
 
@@ -78,5 +94,5 @@ if __name__ == '__main__':
         for xy_i, xy in enumerate(projections):
             ax.annotate(word_names[xy_i], xy, fontproperties=hindi_font)
     
-    plt.savefig('tsne_plots/%s.png' % (args.languages), bbox_inches='tight', pad_inches=0)
+    plt.savefig('tsne_plots/%s_%s_sentence.png' % (languages[0], languages[1]), bbox_inches='tight', pad_inches=0)
 

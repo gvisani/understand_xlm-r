@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 if __name__ == '__main__':
     
-    for language in ['hindi', 'icelandic']:
+    for language in ['english', 'italian', 'hindi', 'icelandic']:
         print('Processing %s ...' % language)
 
         with open('../sentences_%s_with_base_embeddings.pkl' % language, 'rb') as f:

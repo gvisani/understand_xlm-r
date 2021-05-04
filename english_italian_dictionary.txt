@@ -4,11 +4,9 @@ cat	gatto
 giraffe	giraffa
 delicious	delizioso
 wine	vino
-acqua	water
+water	acqua
 lizard	lucertola
 cheese	formaggio
 spoon	cucchiaio
 assistant	assistente
 beer	birra
-elephant	elefante
-lion	leone

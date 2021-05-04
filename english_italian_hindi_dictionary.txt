@@ -1,0 +1,12 @@
+english	italian	hindi
+dog	cane	कुत्ता
+cat	gatto	बिल्ली
+giraffe	giraffa	जिराफ
+delicious	delizioso	स्वादिष्ट
+wine	vino	सोम
+water	acqua	पानी
+lizard	lucertola	छिपकली
+cheese	formaggio	पनीर
+spoon	cucchiaio	चम्मच
+assistant	assistente	सहायक
+beer	birra	बियर
