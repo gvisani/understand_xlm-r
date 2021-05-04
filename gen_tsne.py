@@ -62,5 +62,5 @@ if __name__ == '__main__':
         for xy_i, xy in enumerate(projections):
             ax.annotate(word_names[xy_i], xy)
     
-    plt.savefig('tsne_plots/english_italian.png')
+    plt.savefig('tsne_plots/english_hindi.png')
 
