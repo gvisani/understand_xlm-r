@@ -18,14 +18,14 @@ Otherwise, for gpu support, first intall pytorch with desired cuda verson, then 
 1. Download zip file from https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-3424. Unzip into folder called *UD2.7*.
 2. Run `unzip_ud.py`
 
-
+Note: in our experiments, we assume that the UD folders are in the *parent* folder of the code folder.
 
 ## Scripts for data preparation
 
 The script `xlm_roberta.py` takes a PUD dataset file (or a file with the same format) and created a data structure containing hidden states and attention weights for all tokens in all sentences in the file.
 This script generates a pkl file that is used as input for the POS classifiers (`diagnostic_classifiers_pos.py`, `pos_statistics.py`) and for generating attention weights heatmaps (`gen_heatmap.py`).
 
-The script `xlm_roberta_multilingual_dicts.py` takes a file with bilingual lexicons (two columns of parallel words in two languages, one word per line, tab-separated, top row is the name of the language) and creates a data structure, saved as a pkl file, containing hidden states and attention weights for each token.
+The script `xlm_roberta_multilingual_dicts.py` takes a file with bilingual lexicons (two columns of parallel words in two languages, one word per line, tab-separated, top row is the name of the language) and creates a data structure, saved as a pkl file, containing hidden states and attention weights for each token. The argument 'individual' controls if each word should be regarded as an individual sentence (for experiment 4 part 2) or if all words in one language should be regarded as a single sentence (for experiment 4 part 3)
 
 ## Experiment 1 - POS tags
 
@@ -42,3 +42,10 @@ The script `xlm_roberta_multilingual_dicts.py` takes a file with bilingual lexic
 
 `gen_heatmap.py` generates heatmaps of attention weights for a specific word, given a sentence number and word number. Must be run after `xlm_roberta.py`.
 
+For these experiments, we created files with modified sentences. The files are `en_it_pud-ud-test.conllu` and `eh_pud-ud-test.conllu`. For compatibility with our code, we put these files in the English-PUD folder of the UD treebank folder, but we include them here as well.
+
+## Experiment 4 - word alignments
+
+`gen_tsne.py` creates tsne plots for parts 2 and 3. This must be run after `xlm_roberta_multilingual_dicts.py`.
+
+`gen_tsne_from_sentences.py` creates tsne plots for part 1, and must be run after `xlm_roberta.py`, as it uses the same pkl file as the other experiments. It assumes the 1st sentence from the pkl file is being used. It takes as input two languages, as well as pairs of indices from the same sentence in the two languages. These pairs of indices are meant to identify equivalent words in the two translated sentences.
