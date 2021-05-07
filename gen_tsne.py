@@ -21,7 +21,7 @@ mpl.rcParams['font.sans-serif'] = ['Source Han Sans TW',
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english_italian_v2', type=str)
+    parser.add_argument('--languages', default='english_icelandic_v2', type=str)
     args = parser.parse_args()
 
     with open('%s_dictionary_with_embeddings.pkl' % (args.languages), 'rb') as f:
@@ -78,5 +78,5 @@ if __name__ == '__main__':
         for xy_i, xy in enumerate(projections):
             ax.annotate(word_names[xy_i], xy, fontproperties=hindi_font)
     
-    plt.savefig('tsne_plots/%s.png' % (args.languages), bbox_inches='tight', pad_inches=0)
+    plt.savefig('tsne_plots/%s_words_together.png' % (args.languages), bbox_inches='tight', pad_inches=0)
 
