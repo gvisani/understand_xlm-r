@@ -1,0 +1,9 @@
+english	italian
+peaceful	pacifica
+power	potere
+assistant	assistente
+Monday	lunedì
+digital digitale
+is	è
+special	speciale
+not	non

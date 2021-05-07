@@ -78,5 +78,5 @@ if __name__ == '__main__':
         for xy_i, xy in enumerate(projections):
             ax.annotate(word_names[xy_i], xy, fontproperties=hindi_font)
     
-    plt.savefig('tsne_plots/%s.png' % (args.languages), bbox_inches='tight', pad_inches=0)
+    plt.savefig('tsne_plots/%s_words_together.png' % (args.languages), bbox_inches='tight', pad_inches=0)
 

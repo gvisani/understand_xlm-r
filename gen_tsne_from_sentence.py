@@ -25,6 +25,9 @@ if __name__ == '__main__':
     parser.add_argument('--index_pairs', default='16-21,19-19,26-31,34-35,6-7,8-17,25-30,21-24')
     args = parser.parse_args()
 
+    # english-italian: '16-20,19-23,26-39,34-31,6-9,8-10,25-40,21-24'
+    # english-icelandic: '16-12,26-22,34-28,6-5,8-7,25-21,21-15'
+
     languages = args.languages.split(',')
 
     sentences = {}

@@ -1,0 +1,8 @@
+english	icelandic
+peaceful	friðsamleg
+assistant	aðstoðarmaður
+Monday	mánudaginn
+digital	stafrænu
+is	séu
+special	sérstakur
+not	ekki
