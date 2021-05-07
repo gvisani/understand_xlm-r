@@ -21,7 +21,7 @@ mpl.rcParams['font.sans-serif'] = ['Source Han Sans TW',
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english_icelandic', type=str)
+    parser.add_argument('--languages', default='english_hindi', type=str)
     args = parser.parse_args()
 
     with open('%s_dictionary_with_embeddings.pkl' % (args.languages), 'rb') as f:

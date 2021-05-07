@@ -21,8 +21,8 @@ mpl.rcParams['font.sans-serif'] = ['Source Han Sans TW',
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english,italian', type=str)
-    parser.add_argument('--index_pairs', default='16-20,19-23,26-39,34-31,6-9,8-10,25-40,21-24')
+    parser.add_argument('--languages', default='english,hindi', type=str)
+    parser.add_argument('--index_pairs', default='16-21,19-19,26-31,34-35,6-7,8-17,25-30,21-24')
     args = parser.parse_args()
 
     languages = args.languages.split(',')

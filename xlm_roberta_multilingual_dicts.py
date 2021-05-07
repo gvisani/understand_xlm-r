@@ -47,7 +47,7 @@ def collapse_weights(attn_weights, tok_map):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--languages', default='english_icelandic', type=str)
+    parser.add_argument('--languages', default='english_hindi', type=str)
     args = parser.parse_args()
 
     dictionary = collect_dictionary('%s_dictionary.txt' % (args.languages))
@@ -60,35 +60,36 @@ if __name__ == '__main__':
     embeddings = {}
 
     ## Words in the same language together as one sentence
-    # for language in dictionary:
-    #     pre_tok_sen = dictionary[language]
-    #     input_ids = torch.tensor([tokenizer(pre_tok_sen, is_split_into_words=True)['input_ids']])
-    #     tok_map = [tokenizer.encode(x, add_special_tokens=False) for x in pre_tok_sen]
-    #     outputs = model(input_ids, output_hidden_states=True, output_attentions=True)
+    for language in dictionary:
+        pre_tok_sen = dictionary[language]
+        input_ids = torch.tensor([tokenizer(pre_tok_sen, is_split_into_words=True)['input_ids']])
+        tok_map = [tokenizer.encode(x, add_special_tokens=False) for x in pre_tok_sen]
+        outputs = model(input_ids, output_hidden_states=True, output_attentions=True)
 
-    #     embeddings[language] = []
+        embeddings[language] = []
 
-    #     for word_i, word in enumerate(pre_tok_sen):
-    #         embeddings[language].append({'token': word})
+        for word_i, word in enumerate(pre_tok_sen):
+            embeddings[language].append({'token': word})
 
-    #         toks = tok_map[word_i]
-    #         start_cnt = int(np.sum([len(l) for l in tok_map[:word_i]]))+1
-    #         #print("at word {}".format(word_i))
-    #         for emb_i in range(len(outputs.hidden_states)):
-    #             embeddings[language][word_i]['Layer %d' % (emb_i)] = 0.0
-    #             for cnt in range(len(toks)):
-    #                 embeddings[language][word_i]['Layer %d' % (emb_i)] += outputs.hidden_states[emb_i][0, start_cnt+cnt, :].detach().numpy()
-    #             embeddings[language][word_i]['Layer %d' % (emb_i)] /= len(toks)
-    #         #print("Attn for word {}".format(word_i))
-    #         for emb_i in range(len(outputs.attentions)):
-    #             attn_weights = 0.0
-    #             for cnt in range(len(toks)):
-    #                 attn_weights += outputs.attentions[emb_i][0, :, start_cnt+cnt, :].detach().numpy()
-    #             attn_weights /= len(toks)
-    #             attn_weights = collapse_weights(attn_weights, tok_map)
-    #             embeddings[language][word_i]['Attention Layer %d' % (emb_i)] = attn_weights
+            toks = tok_map[word_i]
+            start_cnt = int(np.sum([len(l) for l in tok_map[:word_i]]))+1
+            #print("at word {}".format(word_i))
+            for emb_i in range(len(outputs.hidden_states)):
+                embeddings[language][word_i]['Layer %d' % (emb_i)] = 0.0
+                for cnt in range(len(toks)):
+                    embeddings[language][word_i]['Layer %d' % (emb_i)] += outputs.hidden_states[emb_i][0, start_cnt+cnt, :].detach().numpy()
+                embeddings[language][word_i]['Layer %d' % (emb_i)] /= len(toks)
+            #print("Attn for word {}".format(word_i))
+            for emb_i in range(len(outputs.attentions)):
+                attn_weights = 0.0
+                for cnt in range(len(toks)):
+                    attn_weights += outputs.attentions[emb_i][0, :, start_cnt+cnt, :].detach().numpy()
+                attn_weights /= len(toks)
+                attn_weights = collapse_weights(attn_weights, tok_map)
+                embeddings[language][word_i]['Attention Layer %d' % (emb_i)] = attn_weights
 
     ## Each word constitutes its own sentence
+    """
     for language in dictionary:
         embeddings[language] = []
         for word_i, word in enumerate(dictionary[language]):
@@ -115,6 +116,6 @@ if __name__ == '__main__':
                 attn_weights /= len(toks)
                 attn_weights = collapse_weights(attn_weights, tok_map)
                 embeddings[language][word_i]['Attention Layer %d' % (emb_i)] = attn_weights
-
+    """
     with open('%s_dictionary_with_embeddings.pkl' % (args.languages), 'wb') as f:
         pickle.dump(embeddings, f)
